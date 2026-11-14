@@ -89,7 +89,7 @@ var DEF={
 "Higiene":"Papel higiênico|2 pct;Shampoo|1;Sabonetes|15;Creme dental adulto|1;Creme dental criança|1;Escova de dente|2;Fio dental|1;Cotonetes|1"
 };
 var S=null,editing=false,confirmReset=false,showFav=false,tab="faltam";
-function vis(it){return(!showFav||it.f)&&(editing||tab!=="comprados"||it.d)}
+function vis(it){return(!showFav||it.f)&&(editing||(tab==="comprados"?it.d:!it.d))}
 function fresh(){var c=[];for(var k in DEF)c.push({n:k,i:DEF[k].split(";").map(function(s){var p=s.split("|");return{t:p[0],q:p[1]||"",d:false}})});return c}
 function load(){try{var r=localStorage.getItem(KEY);if(r){S=JSON.parse(r)}}catch(e){}if(!S||!S.length)S=fresh()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -108,7 +108,7 @@ function render(){
     h+='<div class="add"><input class="n" id="a'+ci+'" placeholder="Novo item…" maxlength="60"><input class="m" id="m'+ci+'" placeholder="Qtd" maxlength="12"><button data-add="'+ci+'">+</button></div></div>';
   });
   if(!h&&tab==="comprados"&&!showFav)h='<div class="cat"><h2>Comprados</h2><div class="it"><label>Nada comprado ainda. Os itens que você marcar aparecem aqui.</label></div></div>';
-  else if(h&&tot&&dn===tot&&tab==="faltam"&&!showFav&&!editing)h='<div class="cat"><h2>Tudo certo 🎉</h2><div class="it"><label>Você comprou tudo! Toque abaixo para começar um novo mês.</label></div><div class="add" style="display:flex"><button data-reset="1" style="flex:1">🔄 Começar novo mês</button></div></div>'+h;
+  else if(!h&&tot&&dn===tot&&tab==="faltam"&&!showFav)h='<div class="cat"><h2>Tudo certo 🎉</h2><div class="it"><label>Você comprou tudo! Toque abaixo para começar um novo mês.</label></div><div class="add" style="display:flex"><button data-reset="1" style="flex:1">🔄 Começar novo mês</button></div></div>';
   else if(showFav&&!h)h='<div class="cat"><h2>Favoritos</h2><div class="it"><label>Nenhum favorito ainda. Toque na ☆ ao lado de um item.</label></div></div>';
   document.getElementById("app").innerHTML=h;
   document.getElementById("n1").textContent=tot;

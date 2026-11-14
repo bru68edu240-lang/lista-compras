@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light only">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lista de Compras</title>
+<style>
+:root{--bg1:#e4eeff;--bg2:#d9d0f5;--card:#fff;--tx:#222;--mut:#888;--ln:#eee9f6;--ac:#6a3dff;--dg:#e5484d;--sh:0 6px 20px rgba(80,60,160,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:light}
+*{box-sizing:border-box}
+html{background:var(--bg1);scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;background:linear-gradient(135deg,var(--bg1),var(--bg2)) fixed;color:var(--tx);font:17px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 14px 120px}
+h1{font-size:26px;font-weight:700;margin:6px 0 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.st{border-radius:16px;padding:12px;color:#fff;position:relative;min-height:96px;box-shadow:var(--sh)}
+.st small{font-size:13px;opacity:.95;display:block;padding-right:34px}
+.st b{display:block;font-size:30px;line-height:1.1;margin-top:14px}
+.st .ic{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:16px}
+.s1{background:linear-gradient(135deg,#8e6bff,#5b2bff)}
+.s2{background:linear-gradient(135deg,#ff8c8c,#ff6b8a)}
+.s3{background:linear-gradient(135deg,#0db8e0,#27f09a)}
+#app{display:grid;grid-template-columns:1fr;gap:14px}
+.cat{background:var(--card);border-radius:16px;box-shadow:var(--sh);overflow:hidden}
+.cat h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:0;padding:14px 16px 6px;display:flex;justify-content:space-between}
+.it{display:flex;align-items:center;gap:12px;padding:11px 16px;border-top:1px solid var(--ln);min-height:48px}
+.it input[type=checkbox]{width:24px;height:24px;accent-color:var(--ac);flex:none}
+.it label{flex:1}
+.q{color:var(--mut);font-size:15px;white-space:nowrap}
+.it.done label,.it.done .q{text-decoration:line-through;color:var(--mut)}
+.qi{width:76px;font:inherit;font-size:15px;padding:6px 8px;border:1px solid var(--ln);border-radius:8px;background:transparent;color:var(--tx);display:none}
+.x{background:none;border:0;color:var(--dg);font-size:22px;padding:0 6px;display:none}
+.edit .qi,.edit .x{display:block}
+.edit .q{display:none}
+.add{display:none;gap:6px;padding:10px 16px;border-top:1px solid var(--ln)}
+.edit .add{display:flex}
+.add input{font:inherit;padding:9px 10px;border:1px solid var(--ln);border-radius:10px;background:transparent;color:var(--tx);min-width:0}
+.add .n{flex:1}.add .m{width:70px}
+.add button{font:inherit;border:0;border-radius:10px;padding:9px 14px;background:var(--ac);color:#fff}
+.side{position:fixed;z-index:5;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;background:var(--card);border-radius:18px;padding:6px;box-shadow:var(--sh)}
+.sb{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:12px}
+.sb i{font-style:normal;font-size:22px;line-height:1}
+.sb.on{color:var(--tx);background:var(--ln)}
+.sb.dg{color:var(--dg)}
+@media (max-width:420px){.sb{font-size:11px;padding:8px 2px}}
+.sp{display:none}
+.tabs{display:flex;gap:8px;margin:0 0 14px}
+.tb{flex:1;font:inherit;font-weight:600;border:0;border-radius:14px;padding:11px 8px;background:var(--card);color:var(--mut);box-shadow:var(--sh)}
+.tb.on{background:var(--ac);color:#fff}
+.tb b{font-weight:700;margin-left:4px}
+.fv{background:none;border:0;font-size:22px;line-height:1;padding:4px 2px;color:var(--mut)}
+.fv.on{color:#f5b301}
+@media (min-width:760px){
+  .wrap{padding:28px 28px 40px 140px}
+  .side{top:calc(24px + env(safe-area-inset-top,0px));bottom:24px;left:24px;right:auto;width:92px;flex-direction:column;padding:14px 8px}
+  .sp{display:block;flex:1}
+  #app{grid-template-columns:1fr 1fr;align-items:start}
+  #app .cat:first-child{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+<div class="side">
+  <span class="sp"></span>
+  <button class="sb" id="ed"><i>✏️</i><span>Editar</span></button>
+  <button class="sb" id="rs"><i>🔄</i><span>Novo mês</span></button>
+</div>
+<div class="wrap">
+  <h1>Lista de Compras Mensal</h1>
+  <div class="stats">
+    <div class="st s1"><small>Itens</small><b id="n1">0</b><span class="ic">🛒</span></div>
+    <div class="st s2"><small>Faltam</small><b id="n2">0</b><span class="ic">📝</span></div>
+    <div class="st s3"><small>No carrinho</small><b id="n3">0</b><span class="ic">✅</span></div>
+  </div>
+  <div class="tabs"><button class="tb on" id="t1">Faltam <b id="c1"></b></button><button class="tb" id="t2">Comprados <b id="c2"></b></button></div>
+  <div id="app"></div>
+</div>
+<script>
+var KEY="listaCompras.v4";
+var DEF={
+"Mercearia":"Arroz|5 kg;Feijão|3 kg;Açúcar|5 kg;Sal|1 kg;Farinha de trigo|2 kg;Farinha de mandioca|1 kg;Fubá|1 kg;Amaciante p pão|1;Aveia|500 g;Amido de milho|1 cx;Fermento químico|1 un;Fermento biológico|1 sachê;Leite condensado|4;Creme de leite|6;Leite de coco|1;Coco ralado|1;Achocolatado|500 g;Café|2 kg;Batata palha|1;Mel|1;Cereal matinal|1;Espaguete|2 kg;Parafuso|1 kg;Lasanha|1 pct;Macarrão instantâneo|4;Milho / ervilha|2;Milho|1;Molho de tomate|2;Azeitonas|2;Óleo|3 l;Azeite|1 l;Vinagre|1;Vinagre balsâmico|1;Ketchup|1;Maionese|1;Orégano|1;Chimichurri|1;Biscoito maria|1;Biscoito maisena|3;Bolacha recheada|1;Pipoca|1;Saco de balas|1",
+"Carnes":"Peito de frango|2 kg;Coxa/sobrecoxa|3 kg;Carne bovina|4 kg;Carne moída|500 g;Carne suína|3 kg;Peixe|2 kg;Linguiça|1 kg;Bacon|500 g;Carne seca|500 g;Ovos|3 dúzias;Costela salgada|500 g;Pão de queijo|1;Fígado de frango|1 kg",
+"Laticínios":"Leite|12 l;Manteiga|200 g;Requeijão|200 g;Muçarela|500 g;Presunto|500 g;Mortadela|500 g;Iogurte|4;Parmesão|1 pct;Margarina|500 g;Batata frita|1",
+"Verduras e Legumes":"Batata|1 kg;Batata-doce|1 kg;Cenoura|1 kg;Tomate|1 kg;Cebola|2 kg;Abobrinha|500 g;Brócolis|1;Pimentão|3;Alho|1 kg;Alface|1;Repolho|1",
+"Frutas":"Banana|6;Maçã|2;Laranja|6;Uva|1;Mamão|2;Melão|1;Melancia|1;Manga|3;Limão|6;Kiwi|1;Ameixa|2",
+"Bebidas":"Vinho|1;Cerveja|6;Refrigerante 2 l|3;Refrigerante mini|24;Energético|1",
+"Limpeza":"Sabão em pó|2 kg;Bucha de banho|1;Amaciante|2;Água sanitária|4;Desinfetante|1;Detergente|8;Multiuso|1;Prestobarba|1;Sabão em barra|1;Álcool líquido|1;Esponjas|1;Papel toalha|1;Bombril|1;Papel alumínio|1;Filme plástico|1;Papel manteiga|1;Palitos|1",
+"Higiene":"Papel higiênico|2 pct;Shampoo|1;Sabonetes|15;Creme dental adulto|1;Creme dental criança|1;Escova de dente|2;Fio dental|1;Cotonetes|1"
+};
+var S=null,editing=false,confirmReset=false,showFav=false,tab="faltam";
+function vis(it){return(!showFav||it.f)&&(editing||tab!=="comprados"||it.d)}
+function fresh(){var c=[];for(var k in DEF)c.push({n:k,i:DEF[k].split(";").map(function(s){var p=s.split("|");return{t:p[0],q:p[1]||"",d:false}})});return c}
+function load(){try{var r=localStorage.getItem(KEY);if(r){S=JSON.parse(r)}}catch(e){}if(!S||!S.length)S=fresh()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function render(){
+  var tot=0,dn=0,h="";
+  S.forEach(function(c,ci){
+    c.i.forEach(function(x){tot++;if(x.d)dn++});
+    if(!c.i.some(vis))return;
+    var cd=c.i.filter(function(x){return x.d}).length;
+    h+='<div class="cat'+(editing?' edit':'')+'"><h2><span>'+esc(c.n)+'</span><span>'+cd+'/'+c.i.length+'</span></h2>';
+    c.i.forEach(function(it,ii){
+      if(!vis(it))return;
+      h+='<div class="it'+(it.d&&tab!=="comprados"?' done':'')+'"><input type="checkbox" id="c'+ci+'_'+ii+'" '+(it.d?'checked':'')+' data-c="'+ci+'" data-i="'+ii+'"><label for="c'+ci+'_'+ii+'">'+esc(it.t)+'</label><span class="q">'+esc(it.q)+'</span><input class="qi" value="'+esc(it.q)+'" data-qc="'+ci+'" data-qi="'+ii+'" maxlength="12" aria-label="Quantidade"><button class="x" data-del="'+ci+'_'+ii+'" aria-label="Remover">×</button></div>';
+    });
+    h+='<div class="add"><input class="n" id="a'+ci+'" placeholder="Novo item…" maxlength="60"><input class="m" id="m'+ci+'" placeholder="Qtd" maxlength="12"><button data-add="'+ci+'">+</button></div></div>';
+  });
+  if(!h&&tab==="comprados"&&!showFav)h='<div class="cat"><h2>Comprados</h2><div class="it"><label>Nada comprado ainda. Os itens que você marcar aparecem aqui.</label></div></div>';
+  else if(h&&tot&&dn===tot&&tab==="faltam"&&!showFav&&!editing)h='<div class="cat"><h2>Tudo certo 🎉</h2><div class="it"><label>Você comprou tudo! Toque abaixo para começar um novo mês.</label></div><div class="add" style="display:flex"><button data-reset="1" style="flex:1">🔄 Começar novo mês</button></div></div>'+h;
+  else if(showFav&&!h)h='<div class="cat"><h2>Favoritos</h2><div class="it"><label>Nenhum favorito ainda. Toque na ☆ ao lado de um item.</label></div></div>';
+  document.getElementById("app").innerHTML=h;
+  document.getElementById("n1").textContent=tot;
+  document.getElementById("n2").textContent=tot-dn;
+  document.getElementById("n3").textContent=dn;
+  document.getElementById("c1").textContent=tot-dn;document.getElementById("c2").textContent=dn;
+  document.getElementById("t1").className="tb"+(tab==="faltam"?" on":"");document.getElementById("t2").className="tb"+(tab==="comprados"?" on":"");
+  var ed=document.getElementById("ed");ed.className="sb"+(editing?" on":"");
+  ed.innerHTML=editing?"<i>✅</i><span>Concluir</span>":"<i>✏️</i><span>Editar</span>";
+  var rs=document.getElementById("rs");rs.className="sb"+(confirmReset?" dg":"");
+  rs.innerHTML=confirmReset?"<i>❗</i><span>Confirmar</span>":"<i>🔄</i><span>Novo mês</span>";
+}
+var app=document.getElementById("app");
+app.addEventListener("change",function(e){
+  var t=e.target,d=t.dataset;
+  if(d.c!==undefined){S[d.c].i[d.i].d=t.checked;save();render()}
+  else if(d.qc!==undefined){S[d.qc].i[d.qi].q=t.value.trim();save()}
+});
+app.addEventListener("click",function(e){
+  var t=e.target;
+  if(t.dataset.del){var p=t.dataset.del.split("_");S[p[0]].i.splice(p[1],1);save();render()}
+  if(t.dataset.fav){var q=t.dataset.fav.split("_"),fi=S[q[0]].i[q[1]];fi.f=!fi.f;save();render()}
+  if(t.dataset.reset){S.forEach(function(c){c.i.forEach(function(i){i.d=false})});save();render();window.scrollTo(0,0)}
+  if(t.dataset.add!==undefined){var ci=t.dataset.add,v=document.getElementById("a"+ci).value.trim(),m=document.getElementById("m"+ci).value.trim();if(v){S[ci].i.push({t:v,q:m,d:false});save();render();var n=document.getElementById("a"+ci);if(n)n.focus()}}
+});
+app.addEventListener("keydown",function(e){
+  if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.parentNode.className==="add"){e.target.parentNode.querySelector("button").click()}
+});
+document.getElementById("t1").onclick=function(){tab="faltam";render()};
+document.getElementById("t2").onclick=function(){tab="comprados";render()};
+document.getElementById("ed").onclick=function(){editing=!editing;confirmReset=false;render()};
+document.getElementById("rs").onclick=function(){
+  if(!confirmReset){confirmReset=true;render();setTimeout(function(){confirmReset=false;render()},4000);return}
+  S.forEach(function(c){c.i.forEach(function(i){i.d=false})});confirmReset=false;save();render();window.scrollTo(0,0);
+};
+load();render();
+</script>
+</body>
+</html>

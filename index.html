@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lista de Compras</title>
 <style>
-:root{--bg1:#e4eeff;--bg2:#d9d0f5;--card:#fff;--tx:#222;--mut:#888;--ln:#eee9f6;--ac:#6a3dff;--dg:#e5484d;--sh:0 6px 20px rgba(80,60,160,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:light}
+:root{--bg1:#F5F5F5;--bg2:#E6DDD4;--card:#FFFFFF;--tx:#141414;--mut:#808080;--ln:#EFE9E4;--ac:#FF94C8;--dg:#4A2C2A;--sh:0 6px 20px rgba(20,20,20,.10);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:light}
 *{box-sizing:border-box}
 html{background:var(--bg1);scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;min-height:100vh;background:linear-gradient(135deg,var(--bg1),var(--bg2)) fixed;color:var(--tx);font:17px/1.4 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
@@ -17,9 +17,10 @@ h1{font-size:26px;font-weight:700;margin:6px 0 0}
 .st small{font-size:13px;opacity:.95;display:block;padding-right:34px}
 .st b{display:block;font-size:30px;line-height:1.1;margin-top:14px}
 .st .ic{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:16px}
-.s1{background:linear-gradient(135deg,#8e6bff,#5b2bff)}
-.s2{background:linear-gradient(135deg,#ff8c8c,#ff6b8a)}
-.s3{background:linear-gradient(135deg,#0db8e0,#27f09a)}
+.s1{background:linear-gradient(135deg,#141414,#4A2C2A)}
+.s2{background:linear-gradient(135deg,#FF9E9E,#FF94C8);color:#141414}
+.s3{background:linear-gradient(135deg,#C58AF9,#FF94C8);color:#141414}
+.s2 .ic,.s3 .ic{background:rgba(255,255,255,.45)}
 #app{display:grid;grid-template-columns:1fr;gap:14px}
 .cat{background:var(--card);border-radius:16px;box-shadow:var(--sh);overflow:hidden}
 .cat h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:0;padding:14px 16px 6px;display:flex;justify-content:space-between}
@@ -36,7 +37,7 @@ h1{font-size:26px;font-weight:700;margin:6px 0 0}
 .edit .add{display:flex}
 .add input{font:inherit;padding:9px 10px;border:1px solid var(--ln);border-radius:10px;background:transparent;color:var(--tx);min-width:0}
 .add .n{flex:1}.add .m{width:70px}
-.add button{font:inherit;border:0;border-radius:10px;padding:9px 14px;background:var(--ac);color:#fff}
+.add button{font:inherit;border:0;border-radius:10px;padding:9px 14px;background:var(--ac);color:#141414}
 .side{position:fixed;z-index:5;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;background:var(--card);border-radius:18px;padding:6px;box-shadow:var(--sh)}
 .sb{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:12px}
 .sb i{font-style:normal;font-size:22px;line-height:1}
@@ -46,7 +47,7 @@ h1{font-size:26px;font-weight:700;margin:6px 0 0}
 .sp{display:none}
 .tabs{display:flex;gap:8px;margin:0 0 14px}
 .tb{flex:1;font:inherit;font-weight:600;border:0;border-radius:14px;padding:11px 8px;background:var(--card);color:var(--mut);box-shadow:var(--sh)}
-.tb.on{background:var(--ac);color:#fff}
+.tb.on{background:var(--ac);color:#141414}
 .tb b{font-weight:700;margin-left:4px}
 .fv{background:none;border:0;font-size:22px;line-height:1;padding:4px 2px;color:var(--mut)}
 .fv.on{color:#f5b301}

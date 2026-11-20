@@ -77,7 +77,7 @@ body{margin:0;min-height:100vh;color:var(--tx);font:400 17px/1.4 "Segoe UI",syst
 .sb svg{width:22px;height:22px}
 .sb.on{background:var(--ac);color:#141414}
 .sb.dg{background:var(--dg);color:#fff}
-.toast{position:fixed;z-index:7;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;background:#141414;color:#fff;padding:11px 14px 11px 18px;border-radius:16px;font-size:15px;transition:.25s;max-width:calc(100% - 24px)}
+.toast{position:fixed;z-index:7;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;background:#141414;color:#fff;padding:11px 14px 11px 18px;border-radius:16px;font-size:15px;transition:.25s;width:max-content;max-width:calc(100% - 24px)}
 .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .toast button{background:none;border:0;color:var(--ac);font:inherit;font-weight:700}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -132,7 +132,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function saveFold(){try{localStorage.setItem(FK,JSON.stringify(fold))}catch(e){}}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function hideToast(){$("toast").classList.remove("show")}
-function toast(m,u){clearTimeout(tt);$("tm").textContent=m;$("tu").onclick=function(){u();hideToast()};$("toast").classList.add("show");tt=setTimeout(hideToast,4000)}
+function toast(m,u){clearTimeout(tt);$("tm").textContent=m;$("tu").onclick=function(){u();hideToast()};$("toast").classList.add("show");tt=setTimeout(hideToast,2000)}
 function resetAll(){S.forEach(function(c){c.i.forEach(function(i){i.d=false})});save();hideToast();render();window.scrollTo(0,0)}
 function render(){
   var tot=0,dn=0,h="";

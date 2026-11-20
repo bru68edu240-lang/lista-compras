@@ -127,7 +127,7 @@ function $(i){return document.getElementById(i)}
 function norm(s){return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function vis(it){if(qs&&norm(it.t).indexOf(qs)<0)return false;return editing||(tab==="comprados"?it.d:!it.d)}
 function fresh(){var c=[];for(var k in DEF)c.push({n:k,i:DEF[k].split(";").map(function(s){var p=s.split("|");return{t:p[0],q:p[1]||"",d:false}})});return c}
-function load(){try{var r=localStorage.getItem(KEY);if(r){S=JSON.parse(r)}}catch(e){}if(!S||!S.length)S=fresh();try{fold=JSON.parse(localStorage.getItem(FK))||{}}catch(e){fold={}}}
+function load(){try{var r=localStorage.getItem(KEY);if(r){S=JSON.parse(r)}}catch(e){}if(!S||!S.length)S=fresh();fold={};S.forEach(function(c){fold[c.n]=1})}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function saveFold(){try{localStorage.setItem(FK,JSON.stringify(fold))}catch(e){}}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}

@@ -20,6 +20,7 @@ h1{font-size:26px;font-weight:700;margin:6px 0 0}
 .st{border-radius:16px;padding:12px;color:#fff;position:relative;min-height:96px;box-shadow:var(--sh)}
 .st small{font-size:13px;opacity:.95;display:block;padding-right:34px}
 .st b{display:block;font-size:30px;line-height:1.1;margin-top:14px}
+.st em{display:block;font-style:normal;font-size:13px;opacity:.9;margin-top:2px}
 .st .ic{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:16px}
 .s1{background:linear-gradient(135deg,#141414,#4A2C2A)}
 .s2{background:linear-gradient(135deg,#FF9E9E,#FF94C8);color:#141414}
@@ -75,7 +76,7 @@ h1{font-size:26px;font-weight:700;margin:6px 0 0}
   <div class="stats">
     <div class="st s1"><small>Itens</small><b id="n1">0</b><span class="ic">🛒</span></div>
     <div class="st s2"><small>Faltam</small><b id="n2">0</b><span class="ic">📝</span></div>
-    <div class="st s3"><small>No carrinho</small><b id="n3">0</b><span class="ic">✅</span></div>
+    <div class="st s3"><small>No carrinho</small><b id="n3">0</b><em id="pc">0,00%</em><span class="ic">✅</span></div>
   </div>
   <div class="tabs"><button class="tb on" id="t1">Faltam <b id="c1"></b></button><button class="tb" id="t2">Comprados <b id="c2"></b></button></div>
   <div id="app"></div>
@@ -118,6 +119,7 @@ function render(){
   document.getElementById("n1").textContent=tot;
   document.getElementById("n2").textContent=tot-dn;
   document.getElementById("n3").textContent=dn;
+  document.getElementById("pc").textContent=(tot?dn/tot*100:0).toFixed(2).replace(".",",")+"%";
   document.getElementById("c1").textContent=tot-dn;document.getElementById("c2").textContent=dn;
   document.getElementById("t1").className="tb"+(tab==="faltam"?" on":"");document.getElementById("t2").className="tb"+(tab==="comprados"?" on":"");
   var ed=document.getElementById("ed");ed.className="sb"+(editing?" on":"");
